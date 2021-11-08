@@ -3,11 +3,11 @@
 branch="$(git rev-parse --abbrev-ref HEAD)"
 
 if [ "$branch" = "master" ]; then
-  echo "You can't commit directly to master branch"
+  echo "You can't commit directly to MASTER branch"
   exit 1
 fi
 
 if [ "$branch" = "dev" ]; then
-  echo "You can't commit directly to master branch"
+  echo "You can't commit directly to DEV branch"
   exit 1
 fi
