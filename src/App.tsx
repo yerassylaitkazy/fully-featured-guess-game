@@ -1,16 +1,36 @@
-import React from "react";
+import React, { lazy, useState, Suspense } from "react";
 import { DetectDevice } from 'modules/detect-device';
 import { TDeviceType } from "modules/detect-device/model";
 import './App.css';
 
-export const App = () => {
+const MobileChunk = lazy(() => import("pages/mobile"));
+const TabletChunk = lazy(() => import("pages/tablet"));
+const DesktopChunk = lazy(() => import("pages/desktop"));
+const Loading = () => <div>Loading...</div>;
 
-  const handleDetectDevice = (device: TDeviceType) => {
-    console.log("device", device);
-  };
+export const App = () => {
+  const [requiredApp, setRequiredApp] = useState<TDeviceType | undefined>();
+
+  if (requiredApp === "desktop") {
+    return <Suspense fallback={<Loading />}>
+      <DesktopChunk />
+    </Suspense>;
+  }
+
+  if (requiredApp === "tablet") {
+    return <Suspense fallback={<Loading />}>
+      <TabletChunk />
+    </Suspense>;
+  }
+
+  if (requiredApp === "mobile") {
+    return <Suspense fallback={<Loading />}>
+      <MobileChunk />
+    </Suspense>;
+  }
 
   return <>
-    <div>App</div>
-    <DetectDevice onDetect={handleDetectDevice} />
+    <DetectDevice onDetect={setRequiredApp} />
+    <Loading />
   </>;
 };
